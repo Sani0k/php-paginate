@@ -23,6 +23,16 @@
 			if( isset($this->options[$literal]) ) {
 				$this->options[$literal] = $value;
 			}
+			$this->isPaginated = FALSE;
+			return $this;
+		}
+		
+		public function setScope( $value ) {
+			return $this->setOption( 'scope', $value );
+		}
+		
+		public function setFirstPage( $value ) {
+			return $this->setOption( 'firstPage', $value );
 		}
 		
 		public function Paginate() {
@@ -30,6 +40,7 @@
 			$this->start = (int) ($this->lastPage > $this->maxrange) ? max($this->options['firstPage'], $this->currentPage - $this->options['scope']) : $this->options['firstPage'];
 			$this->goal = (int) ($this->lastPage > $this->maxrange) ? min($this->lastPage, $this->currentPage + $this->options['scope']) : $this->lastPage;
 			$this->isPaginated = TRUE;
+			return $this;
 		}
 		
 		public function Generate() {
@@ -55,6 +66,7 @@
 					echo sprintf( $element, $this->lastPage ) . "\n";
 				}
 			}
+			echo "</ul>";
 		}
 	}
 ?>
