@@ -47,26 +47,44 @@
 			if( $this->isPaginated !== TRUE ) {
 				throw new Exception( "You need to call Paginator::Paginate() before generating results." );
 			}
-			$element = "<li style='display: inline; padding: 0px 2px;'><span>%d</span></li>";
-			echo "<ul style='display: inline-block;'>";
+			$doc = new DOMDocument();
+			$u = $doc->createElement( 'ul' );
+			$u->setAttribute( 'style', 'display: inline-block;' );
 			if( $this->start == $this->options['firstPage'] ) {
 				for( $i = $this->start; $i <= $this->goal; $i++ ) {
-					echo sprintf( $element, $i ) . "\n";
+					$l = $doc->createElement( 'li' );
+					$l->setAttribute( 'style', 'display: inline; padding: 0px 2px;' );
+					$l->appendChild( $doc->createElement( 'span', $i ) );
+					$u->appendChild( $l );
 				}
 				if( $this->goal != $this->lastPage ) {
-					echo sprintf( $element, $this->lastPage ) . "\n";
+					$l = $doc->createElement( 'li' );
+					$l->setAttribute( 'style', 'display: inline; padding: 0px 2px;' );
+					$l->appendChild( $doc->createElement( 'span', $this->lastPage ) );
+					$u->appendChild( $l );
 				}
 			}
 			else {
-				echo sprintf( $element, $this->options['firstPage'] ) . "\n";
+				$l = $doc->createElement( 'li' );
+				$l->setAttribute( 'style', 'display: inline; padding: 0px 2px;' );
+				$l->appendChild( $doc->createElement( 'span', $this->options['firstPage'] ) );
+				$u->appendChild( $l );
 				for( $i = $this->start; $i <= $this->goal; $i++ ) {
-					echo sprintf( $element, $i ) . "\n";
+					$l = $doc->createElement( 'li' );
+					$l->setAttribute( 'style', 'display: inline; padding: 0px 2px;' );
+					$l->appendChild( $doc->createElement( 'span', $i ) );
+					$u->appendChild( $l );
 				}
 				if( $this->goal != $this->lastPage ) {
-					echo sprintf( $element, $this->lastPage ) . "\n";
+					$l = $doc->createElement( 'li' );
+					$l->setAttribute( 'style', 'display: inline; padding: 0px 2px;' );
+					$l->appendChild( $doc->createElement( 'span', $this->lastPage ) );
+					$u->appendChild( $l );
 				}
 			}
-			echo "</ul>";
+			$doc->appendChild( $u );
+			$doc->formatOutput = TRUE;
+			echo $doc->saveHTML();
 		}
 	}
 ?>
